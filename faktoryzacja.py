@@ -63,11 +63,8 @@ def read_int():
             print("Podana wartosc nie jest liczba calkowita.")
 
 
-if __name__ == "__main__":
-    n = int(read_int())
+def read_matrix(n):
     M = np.zeros((n, n))
-    print("Prosze podac kolejno elementy macierzy")
-    print("(w przypadku liczb dziesietnych uzywac kropki)")
     x = 0
     while x < n:
         print("Element w wierszu", x)
@@ -85,10 +82,17 @@ if __name__ == "__main__":
                     print("Ktorys z elementow z wiersza nie jest liczba")
                     x -= 1
         x += 1
+    return M
+
+
+if __name__ == "__main__":
+    n = int(read_int())
+    print("Prosze podac kolejno elementy macierzy")
+    print("(w przypadku liczb dziesietnych uzywac kropki)")
+    M = read_matrix(n)
     print("Wpisana macierz:\n", M, "\n")
     lu = facto_lu(M)
     L, U, P = lu
     print("L:\n", L, "\nU:\n", U, "\nP:\n", P, "\n")
-    w = np.dot(P, L)
-    print("\nSprawdzenie PxLxU: \n", np.dot(w, U))
+    print("\nSprawdzenie PxLxU: \n", np.dot(np.dot(P, L), U))
     print("Poczatkowa macierz:\n", M)
