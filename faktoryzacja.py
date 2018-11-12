@@ -46,6 +46,7 @@ def facto_lu(matrix):
                 L[j][i] = (matrix[j][i] - sum) / U[i][i]
     return L, U, P
 
+
 def check_if_float(element):
     try:
         float(element)
@@ -54,23 +55,46 @@ def check_if_float(element):
     return True
 
 
+def check_if_int(element):
+    try:
+        int(element)
+    except ValueError:
+        return False
+    return True
+
+
+def read_int():
+    while True:
+        size = input("Prosze podac rozmiar macierzy\n")
+        if check_if_int(size):
+            return size
+        else:
+            print("Podana wartosc nie jest liczba calkowita.")
+
+
 if __name__ == "__main__":
-    n = int(input("Prosze podac rozmiar macierzy\n"))
+    n = int(read_int())
     M = np.zeros((n, n))
     print("Prosze podac kolejno elementy macierzy")
     print("(w przypadku liczb dziesietnych uzywac kropki)")
-    for x in range(n):
+    x = 0
+    while x < n:
         print("Element w wierszu", x)
         m = input()
-        i = 0
-        for y in m.split():
-            if check_if_float(y):
-                M[x][i] = y
-                i += 1
-            else:
-                print("Ktorys z elementow z wiersza nie jest liczba. Uruchom program jeszcze raz")
-                sys.exit()
+        if len(m.split()) != n:
+            print("Zla liczba elementow w wierszu")
+            x -= 1
+        else:
+            i = 0
+            for y in m.split():
+                if check_if_float(y):
+                    M[x][i] = y
+                    i += 1
+                else:
+                    print("Ktorys z elementow z wiersza nie jest liczba")
+                    x -= 1
 
+        x += 1
     print("Wpisana macierz:\n", M, "\n")
     lu = facto_lu(M)
     L, U, P = lu
