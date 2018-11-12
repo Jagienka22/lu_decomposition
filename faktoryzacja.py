@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 
 def pivot(matrix):
@@ -58,7 +59,10 @@ def read_int():
     while True:
         size = input("Prosze podac rozmiar macierzy\n")
         if check_if(size, int):
-            return size
+            if int(size) > 0:
+                return size
+            else:
+                print("Podana liczba jest mniejsza lub rowna zero")
         else:
             print("Podana wartosc nie jest liczba calkowita.")
 
@@ -82,7 +86,11 @@ def read_matrix(n):
                     print("Ktorys z elementow z wiersza nie jest liczba")
                     x -= 1
         x += 1
-    return M
+    if np.linalg.det(M) != 0:
+        return M
+    else:
+        print("Nie da sie dokonac faktoryzacji dla tej macierzy, bo wyznacznik jest rowny zero (jest osobliwa)")
+        sys.exit()
 
 
 if __name__ == "__main__":
