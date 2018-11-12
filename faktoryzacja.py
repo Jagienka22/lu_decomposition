@@ -1,5 +1,4 @@
 import numpy as np
-import sys
 
 
 def pivot(matrix):
@@ -47,17 +46,9 @@ def facto_lu(matrix):
     return L, U, P
 
 
-def check_if_float(element):
+def check_if(element, method):
     try:
-        float(element)
-    except ValueError:
-        return False
-    return True
-
-
-def check_if_int(element):
-    try:
-        int(element)
+        method(element)
     except ValueError:
         return False
     return True
@@ -66,7 +57,7 @@ def check_if_int(element):
 def read_int():
     while True:
         size = input("Prosze podac rozmiar macierzy\n")
-        if check_if_int(size):
+        if check_if(size, int):
             return size
         else:
             print("Podana wartosc nie jest liczba calkowita.")
@@ -87,13 +78,12 @@ if __name__ == "__main__":
         else:
             i = 0
             for y in m.split():
-                if check_if_float(y):
+                if check_if(y, float):
                     M[x][i] = y
                     i += 1
                 else:
                     print("Ktorys z elementow z wiersza nie jest liczba")
                     x -= 1
-
         x += 1
     print("Wpisana macierz:\n", M, "\n")
     lu = facto_lu(M)
