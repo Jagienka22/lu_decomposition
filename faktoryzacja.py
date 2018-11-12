@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 
 def pivot(matrix):
@@ -32,10 +33,9 @@ def facto_lu(matrix):
                 sum += (L[i][k] * U[k][j])
             U[i][j] = matrix[i][j] - sum
             if i == j and U[i][j] == 0.0:
-                P = pivot(matrix)
-                matrix = np.dot(P, matrix)
-                print(P, "p")
-                print("dzielimy przez zero", i, j)
+                tmp_P = pivot(matrix)
+                P = np.dot(P, tmp_P)
+                matrix = np.dot(tmp_P, matrix)
             else:
                 j += 1
         for j in range(i + 1, n):
@@ -46,19 +46,35 @@ def facto_lu(matrix):
                 L[j][i] = (matrix[j][i] - sum) / U[i][i]
     return L, U, P
 
+def check_if_float(element):
+    try:
+        float(element)
+    except ValueError:
+        return False
+    return True
+
 
 if __name__ == "__main__":
     n = int(input("Prosze podac rozmiar macierzy\n"))
     M = np.zeros((n, n))
-    print(M)
     print("Prosze podac kolejno elementy macierzy")
     print("(w przypadku liczb dziesietnych uzywac kropki)")
     for x in range(n):
         print("Element w wierszu", x)
         m = input()
-        M[x] = m.split()
+        i = 0
+        for y in m.split():
+            if check_if_float(y):
+                M[x][i] = y
+                i += 1
+            else:
+                print("Ktorys z elementow z wiersza nie jest liczba. Uruchom program jeszcze raz")
+                sys.exit()
+
     print("Wpisana macierz:\n", M, "\n")
     lu = facto_lu(M)
     L, U, P = lu
-    print("L:\n ", L, "U:\n", U, "P:\n", P, "\n")
-    print("Sprawdzenie: \n", np.dot(P, L, U))
+    print("L:\n", L, "\nU:\n", U, "\nP:\n", P, "\n")
+    w = np.dot(P, L)
+    print("\nSprawdzenie PxLxU: \n", np.dot(w, U))
+    print("Poczatkowa macierz:\n", M)
